@@ -1,19 +1,32 @@
+// eslint-disable-next-line import/no-named-as-default
 import Key from './Key.js';
 
 export default class Keyboard {
   constructor(lang) {
     this.lang = 'en';
+
+    this.shiftRight = false;
+    this.shiftLeft = false;
+    this.ctrlLeft = false;
+    this.ctrlRight = false;
+    this.altLeft = false;
+    this.altRight = false;
+    this.caps = false;
+    this.allKeys = {};
+
     this.template = [
       ['Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace'],
       ['Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'Delete'],
       ['CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter'],
       ['ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight'],
-      ['ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight'],
+      ['Sound', 'Language', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'Sound'],
     ];
-    this.allKeys = {};
+  }
 
+  init() {
     this.drawLayout();
     this.drawKeys();
+    this.listenEventListeners();
   }
 
   drawLayout() {

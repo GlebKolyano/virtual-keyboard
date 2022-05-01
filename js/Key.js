@@ -1,5 +1,5 @@
 import KeyService from './key.service.js';
-
+// import Keyboard from './Keyboard.js';
 export default class Key {
   constructor(keyCode, lang) {
     this.key = {};
@@ -32,4 +32,10 @@ export default class Key {
     this.element.append(this.sub, this.title);
     this.currentValue = this.key[lang].value;
   }
+
+  // keyUp() {}
+  // keyDown() {}
+  // click() {
+  //   const textarea = Keyboard.
+  // }
 }
