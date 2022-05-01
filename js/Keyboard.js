@@ -24,5 +24,20 @@ export default class Keyboard {
 
     this.container.append(this.textarea, this.keyboard);
     document.body.append(this.container);
+
+    this.drawKeys();
+  }
+
+  drawKeys() {
+    this.template.forEach((row) => {
+      const rowValues = document.createElement('div');
+      rowValues.classList.add('keys-row');
+      row.forEach((code) => {
+        const key = new Key(code, this.lang);
+        this.allKeys[code] = key;
+        rowValues.append(key.element);
+      });
+      this.keyboard.append(rowValues);
+    });
   }
 }
