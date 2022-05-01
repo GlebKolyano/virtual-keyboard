@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-named-as-default
 import Key from './Key.js';
 
 export default class Keyboard {
@@ -21,15 +20,7 @@ export default class Keyboard {
       ['ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight'],
       ['Sound', 'Language', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'Sound'],
     ];
-  }
 
-  init() {
-    this.drawLayout();
-    this.drawKeys();
-    this.listenEventListeners();
-  }
-
-  drawLayout() {
     this.textarea = document.createElement('textarea');
     this.textarea.classList.add('textarea');
     this.textarea.setAttribute('rows', 10);
@@ -44,16 +35,45 @@ export default class Keyboard {
     document.body.append(this.container);
   }
 
+  init() {
+    this.drawKeys();
+    this.listenEventListeners();
+  }
+
   drawKeys() {
     this.template.forEach((row) => {
       const rowValues = document.createElement('div');
       rowValues.classList.add('keys-row');
       row.forEach((code) => {
-        const key = new Key(code, this.lang);
+        const key = new Key(code, this.lang, this);
         this.allKeys[code] = key;
-        rowValues.append(key.element);
+        rowValues.append(key.keyWrapper);
       });
       this.keyboard.append(rowValues);
+    });
+  }
+
+  listenEventListeners() {
+    document.addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (this.allKeys[e.code]) {
+        const key = this.allKeys[e.code];
+        key.keyUp();
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      e.preventDefault();
+      if (this.allKeys[e.code]) {
+        const key = this.allKeys[e.code];
+        key.keyDown();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (this.allKeys[e.target.getAttribute('code')]) {
+        const key = this.allKeys[e.target.getAttribute('code')];
+        key.click();
+      }
     });
   }
 }

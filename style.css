@@ -99,10 +99,10 @@ body {
   border-top: 1px solid #000;
 }
 
-.Enter, .Backspace, .CapsLock, .ShiftRight, .ShiftLeft {
+div[code=Enter], div[code=Backspace], div[code=CapsLock] ,div[code=ShiftRight], div[code=ShiftLeft] {
   width: 95px;
 }
-.Space {
+div[code=Space] {
   width: 205px;
 }
 
