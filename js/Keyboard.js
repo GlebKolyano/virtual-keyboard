@@ -2,7 +2,7 @@ import Key from './Key.js';
 
 export default class Keyboard {
   constructor(lang) {
-    this.lang = 'en';
+    this.lang = lang;
 
     this.shiftRight = false;
     this.shiftLeft = false;
@@ -68,12 +68,17 @@ export default class Keyboard {
         key.keyDown();
       }
     });
-    document.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (this.allKeys[e.target.getAttribute('code')]) {
-        const key = this.allKeys[e.target.getAttribute('code')];
-        key.click();
-      }
+    document.addEventListener('mousedown', (e) => {
+      if (!e.target.closest('.key')) return;
+      const keyEl = e.target.closest('.key');
+      const key = this.allKeys[keyEl.getAttribute('code')];
+      key.keyDown();
+    });
+    document.addEventListener('mouseup', (e) => {
+      if (!e.target.closest('.key')) return;
+      const keyEl = e.target.closest('.key');
+      const key = this.allKeys[keyEl.getAttribute('code')];
+      key.keyUp();
     });
   }
 }

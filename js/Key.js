@@ -35,16 +35,32 @@ export default class Key {
   }
 
   keyDown() {
-    const keyEl = document.querySelector(`div[code="${this.keyCode}"]`);
-    keyEl.classList.add('keydown');
-    if (this.key[this.lang].shift !== null) {
+    this.keyWrapper.classList.add('keydown');
+    if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
       this.writeText();
+    } else {
+      this.funcKeysOn();
     }
   }
 
   keyUp() {
-    const keyEl = document.querySelector(`div[code="${this.keyCode}"]`);
-    keyEl.classList.remove('keydown');
+    this.keyWrapper.classList.remove('keydown');
+  }
+
+  funcKeysOn() {
+    const { textarea } = this.keyboard;
+    const cursorStart = textarea.selectionStart;
+    const cursorEnd = textarea.selectionEnd;
+
+    if (this.keyCode === 'ArrowLeft' && cursorStart > 0) {
+      textarea.setSelectionRange(cursorStart - 1, cursorStart - 1);
+    }
+
+    if (this.keyCode === 'ArrowRight') {
+      textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+    }
+
+    textarea.focus();
   }
 
   writeText() {
@@ -53,18 +69,14 @@ export default class Key {
     const cursorStart = textarea.selectionStart;
     const cursorEnd = textarea.selectionEnd;
 
-    const partTextStart = this.keyboard.textarea.value.slice(0, cursorStart);
-    const partTextEnd = this.keyboard.textarea.value.slice(cursorEnd);
+    const textBeforeCursor = this.keyboard.textarea.value.slice(0, cursorStart);
+    const textAterCursor = this.keyboard.textarea.value.slice(cursorEnd);
     if (this.currentValue.length === 1) {
-      this.keyboard.textarea.value = partTextStart + this.currentValue + partTextEnd;
+      this.keyboard.textarea.value = textBeforeCursor + this.currentValue + textAterCursor;
       textarea.selectionStart = cursorStart + 1;
       textarea.selectionEnd = cursorStart + 1;
     }
 
     textarea.focus();
-  }
-
-  click() {
-    this.writeText();
   }
 }
