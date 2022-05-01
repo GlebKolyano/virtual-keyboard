@@ -7,6 +7,7 @@ export default class Key {
     this.allKeys = KeyService;
     this.lang = lang;
     this.keyboard = keyboard;
+    this.textarea = keyboard.textarea;
 
     if (lang === 'en') {
       this.allKeys.en.forEach(() => {
@@ -44,39 +45,32 @@ export default class Key {
   }
 
   keyUp() {
+    this.textarea.focus();
     this.keyWrapper.classList.remove('keydown');
   }
 
   funcKeysOn() {
-    const { textarea } = this.keyboard;
-    const cursorStart = textarea.selectionStart;
-    const cursorEnd = textarea.selectionEnd;
+    const cursorStart = this.textarea.selectionStart;
+    const cursorEnd = this.textarea.selectionEnd;
 
     if (this.keyCode === 'ArrowLeft' && cursorStart > 0) {
-      textarea.setSelectionRange(cursorStart - 1, cursorStart - 1);
+      this.textarea.setSelectionRange(cursorStart - 1, cursorStart - 1);
     }
-
     if (this.keyCode === 'ArrowRight') {
-      textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+      this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
     }
-
-    textarea.focus();
   }
 
   writeText() {
-    const { textarea } = this.keyboard;
+    const cursorStart = this.textarea.selectionStart;
+    const cursorEnd = this.textarea.selectionEnd;
 
-    const cursorStart = textarea.selectionStart;
-    const cursorEnd = textarea.selectionEnd;
-
-    const textBeforeCursor = this.keyboard.textarea.value.slice(0, cursorStart);
-    const textAterCursor = this.keyboard.textarea.value.slice(cursorEnd);
+    const textBeforeCursor = this.textarea.value.slice(0, cursorStart);
+    const textAterCursor = this.textarea.value.slice(cursorEnd);
     if (this.currentValue.length === 1) {
-      this.keyboard.textarea.value = textBeforeCursor + this.currentValue + textAterCursor;
-      textarea.selectionStart = cursorStart + 1;
-      textarea.selectionEnd = cursorStart + 1;
+      this.textarea.value = textBeforeCursor + this.currentValue + textAterCursor;
+      this.textarea.selectionStart = cursorStart + 1;
+      this.textarea.selectionEnd = cursorStart + 1;
     }
-
-    textarea.focus();
   }
 }
