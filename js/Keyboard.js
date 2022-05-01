@@ -12,6 +12,11 @@ export default class Keyboard {
     ];
     this.allKeys = {};
 
+    this.drawLayout();
+    this.drawKeys();
+  }
+
+  drawLayout() {
     this.textarea = document.createElement('textarea');
     this.textarea.classList.add('textarea');
     this.textarea.setAttribute('rows', 10);
@@ -24,8 +29,6 @@ export default class Keyboard {
 
     this.container.append(this.textarea, this.keyboard);
     document.body.append(this.container);
-
-    this.drawKeys();
   }
 
   drawKeys() {
