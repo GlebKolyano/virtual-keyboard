@@ -35,21 +35,21 @@ export default class Key {
     this.currentValue = this.key[lang].value;
   }
 
-  keyDown(isClick) {
+  keyDown(isClick = false) {
     this.keyWrapper.classList.add('keydown');
     if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
       this.writeText();
     } else {
-      this.funcKeysOn();
+      this.funcKeysOn(isClick = false);
     }
   }
 
-  keyUp(isClick) {
+  keyUp(isClick = false) {
     this.textarea.focus();
     this.keyWrapper.classList.remove('keydown');
   }
 
-  funcKeysOn() {
+  funcKeysOn(isClick = false) {
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
     const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
@@ -89,6 +89,18 @@ export default class Key {
       case 'ControlRight' || 'ControlLeft':
         break;
       case 'AltRight' || 'AltLeft':
+        break;
+      case 'Space':
+        this.textarea.value = `${textBeforeCursor} ${textAterCursor}`;
+        this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        break;
+      case 'Enter':
+        this.textarea.value = `${textBeforeCursor}\n${textAterCursor}`;
+        this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        break;
+      case 'Tab':
+        this.textarea.value = `${textBeforeCursor}    ${textAterCursor}`;
+        this.textarea.setSelectionRange(cursorEnd + 4, cursorEnd + 4);
         break;
       default:
         break;
