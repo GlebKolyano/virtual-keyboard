@@ -23,8 +23,8 @@ export default class Keyboard {
 
     this.textarea = document.createElement('textarea');
     this.textarea.classList.add('textarea');
-    this.textarea.setAttribute('rows', 10);
-    this.textarea.setAttribute('cols', 70);
+    this.textarea.setAttribute('rows', 5);
+    this.textarea.setAttribute('cols', 79);
     this.textarea.setAttribute('autofocus', true);
     this.keyboard = document.createElement('div');
     this.keyboard.classList.add('keyboard');
@@ -58,14 +58,14 @@ export default class Keyboard {
       e.preventDefault();
       if (this.allKeys[e.code]) {
         const key = this.allKeys[e.code];
-        key.keyUp();
+        key.keyUp(false);
       }
     });
     document.addEventListener('keydown', (e) => {
       e.preventDefault();
       if (this.allKeys[e.code]) {
         const key = this.allKeys[e.code];
-        key.keyDown();
+        key.keyDown(e.repeat, false);
       }
     });
     document.addEventListener('mousedown', (e) => {
@@ -82,25 +82,13 @@ export default class Keyboard {
     });
   }
 
-  shift() {
-    Object.keys(this.allKeys).forEach((code) => {
-      this.allKeys[code].shifOn();
-    });
-  }
-
-  unshift() {
-    Object.keys(this.allKeys).forEach((code) => {
-      this.allKeys[code].shifOff();
-    });
-  }
-
-  capsClick() {
+  capsLock() {
     Object.keys(this.allKeys).forEach((code) => {
       this.allKeys[code].capsToggle();
     });
   }
 
-  shiftClick() {
+  shift() {
     Object.keys(this.allKeys).forEach((code) => {
       this.allKeys[code].shiftToggle();
     });

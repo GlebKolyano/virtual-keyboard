@@ -35,45 +35,40 @@ export default class Key {
     this.currentValue = this.key[lang].value;
   }
 
-  keyDown(isClick = false) {
+  keyDown(isRepeat = false, isClick = false) {
     this.keyWrapper.classList.add('keydown');
     if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
       this.writeText();
     } else {
-      this.funcKeysOn(isClick);
+      this.funcKeysOn(isRepeat, isClick);
     }
   }
 
-  keyUp(isClick = false) {
+  keyUp() {
     this.textarea.focus();
-    if (!isClick) {
-      this.keyWrapper.classList.remove('keydown');
-    }
+    this.keyWrapper.classList.remove('keydown');
     switch (this.keyCode) {
       case 'CapsLock':
         this.keyWrapper.classList.toggle('func-key_active');
         this.keyboard.caps = !this.keyboard.caps;
-        this.keyboard.capsClick();
+        this.keyboard.capsLock();
         break;
       case 'ShiftRight':
-        if (isClick === false) {
-          this.keyboard.shiftRight = false;
-          this.keyboard.unshift();
-        }
+        this.keyWrapper.classList.toggle('func-key_active');
+        this.keyboard.shiftRight = false;
+        this.keyboard.shift();
         break;
       case 'ShiftLeft':
-        if (isClick === false) {
-          this.keyboard.shiftLeft = false;
-          this.keyboard.unshift();
-        }
+        this.keyWrapper.classList.toggle('func-key_active');
+        this.keyboard.shiftLeft = false;
+        this.keyboard.shift();
         break;
       default:
         break;
     }
   }
 
-  funcKeysOn(isClick) {
-    const click = isClick;
+  funcKeysOn(isRepeat) {
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
     const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
@@ -109,23 +104,17 @@ export default class Key {
       case 'CapsLock':
         break;
       case 'ShiftRight':
-        if (isClick === false) {
+        if (isRepeat === false) {
+          this.keyWrapper.classList.toggle('func-key_active');
           this.keyboard.shiftRight = true;
           this.keyboard.shift();
-        } else {
-          this.keyWrapper.classList.toggle('func-key_active');
-          this.keyboard.shiftRight = !this.keyboard.shiftRight;
-          this.keyboard.shiftClick();
         }
         break;
       case 'ShiftLeft':
-        if (isClick === false) {
+        if (isRepeat === false) {
+          this.keyWrapper.classList.toggle('func-key_active');
           this.keyboard.shiftLeft = true;
           this.keyboard.shift();
-        } else {
-          this.keyWrapper.classList.toggle('func-key_active');
-          this.keyboard.shiftRight = !this.keyboard.shiftRight;
-          this.keyboard.shiftClick();
         }
         break;
       case 'ControlRight' || 'ControlLeft':
@@ -162,57 +151,14 @@ export default class Key {
     }
   }
 
-  shifOn() {
-    const { caps, shiftLeft, shiftRight } = this.keyboard;
-    if (this.key[this.lang].shift) {
-      if (!caps) {
-        if (shiftLeft || shiftRight) {
-          this.sub.classList.add('shift_active');
-          this.currentValue = this.key[this.lang].shift;
-          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-            this.title.innerHTML = this.currentValue;
-          }
-        }
-      } else if (shiftLeft || shiftRight) {
-        this.sub.classList.add('shift_active');
-        if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
-          this.currentValue = this.key[this.lang].shift;
-        }
-      }
-    }
-  }
-
-  shifOff() {
-    const { caps, shiftLeft, shiftRight } = this.keyboard;
-    if (this.key[this.lang].shift) {
-      if (!caps) {
-        if (!shiftLeft && !shiftRight) {
-          this.sub.classList.remove('shift_active');
-          this.currentValue = this.key[this.lang].value;
-          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-            this.title.innerHTML = this.currentValue;
-          }
-        }
-      } else if (!shiftLeft && !shiftRight) {
-        this.sub.classList.remove('shift_active');
-        if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
-          this.currentValue = this.key[this.lang].value;
-        }
-      }
-    }
-  }
-
   capsToggle() {
-    const { shiftLeft, shiftRight } = this.keyboard;
     if (this.key[this.lang].shift) {
-      if (!shiftLeft && !shiftRight) {
-        if (this.currentValue === this.key[this.lang].shift) {
-          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-            this.currentValue = this.key[this.lang].value;
-            this.title.innerHTML = this.currentValue;
-          }
-        } else if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+        if (this.currentValue !== this.key[this.lang].shift) {
           this.currentValue = this.key[this.lang].shift;
+          this.title.innerHTML = this.currentValue;
+        } else {
+          this.currentValue = this.key[this.lang].value;
           this.title.innerHTML = this.currentValue;
         }
       }
@@ -220,21 +166,16 @@ export default class Key {
   }
 
   shiftToggle() {
-    const { caps, shiftLeft, shiftRight } = this.keyboard;
     if (this.key[this.lang].shift) {
-      if (!caps) {
-        if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-          if (this.currentValue !== this.key[this.lang].shift) {
-            this.currentValue = this.key[this.lang].shift;
-            this.title.innerHTML = this.currentValue;
-          } else if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-            this.currentValue = this.key[this.lang].value;
-            this.title.innerHTML = this.currentValue;
-          }
+      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+        if (this.currentValue !== this.key[this.lang].shift) {
+          this.currentValue = this.key[this.lang].shift;
+          this.title.innerHTML = this.currentValue;
+        } else {
+          this.currentValue = this.key[this.lang].value;
+          this.title.innerHTML = this.currentValue;
         }
-      }
-
-      if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
+      } else if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
         if (this.currentValue === this.key[this.lang].shift) {
           this.sub.classList.remove('shift_active');
           this.currentValue = this.key[this.lang].value;

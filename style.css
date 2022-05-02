@@ -7,7 +7,9 @@ body {
 }
 .textarea {
   outline: none;
-  width: 500px;
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 25vh;
   font-size: 20px;
 }
 .keyboard {
@@ -101,12 +103,25 @@ body {
   border-top: 1px solid #000;
 }
 
+.key:active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  background: rgb(80, 77, 77);
+  transition: background 1s,
+  color 1s,
+  text-shadow 1s;
+}
 .shift_active {
-  color: rgb(0, 255, 242);
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  transition: color 1s, text-shadow 1s;
 }
 
 .func-key_active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
   background: rgb(80, 77, 77);
+  transition: background 1s, color 1s, text-shadow 1s;
 }
 div[code=Enter], div[code=Backspace], div[code=CapsLock] ,div[code=ShiftRight], div[code=ShiftLeft] {
   width: 95px;
