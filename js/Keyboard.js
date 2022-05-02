@@ -81,4 +81,15 @@ export default class Keyboard {
       key.keyUp(true);
     });
   }
+
+  shiftAndCaps() {
+    Object.keys(this.allKeys).forEach((code) => {
+      this.allKeys[code].changeKeyCaseUp();
+      if (code === 'CapsLock') {
+        this.allKeys[code].changeKeyCaseDown();
+      }
+    });
+  }
+
+  changeLanguage() {}
 }

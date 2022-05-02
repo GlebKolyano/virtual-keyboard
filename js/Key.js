@@ -40,16 +40,28 @@ export default class Key {
     if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
       this.writeText();
     } else {
-      this.funcKeysOn(isClick = false);
+      this.funcKeysOn(isClick);
     }
   }
 
   keyUp(isClick = false) {
     this.textarea.focus();
-    this.keyWrapper.classList.remove('keydown');
+    if (!isClick) {
+      this.keyWrapper.classList.remove('keydown');
+    }
+    switch (this.keyCode) {
+      case 'CapsLock':
+        this.keyWrapper.classList.remove('func-key_active');
+        this.keyboard.caps = !this.keyboard.caps;
+        this.keyboard.shiftAndCaps();
+        break;
+      default:
+        break;
+    }
   }
 
-  funcKeysOn(isClick = false) {
+  funcKeysOn(isClick) {
+    const click = isClick;
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
     const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
@@ -83,8 +95,19 @@ export default class Key {
         }
         break;
       case 'CapsLock':
+        this.keyWrapper.classList.add('func-key_active');
         break;
-      case 'ShiftRight' || 'ShiftLeft':
+      case 'ShiftRight':
+        if (isClick === false) {
+          this.keyboard.shiftRight = true;
+        }
+        this.keyboard.shiftAndCaps();
+        break;
+      case 'ShiftLeft':
+        if (isClick === false) {
+          this.keyboard.shiftLeft = true;
+        }
+        this.keyboard.shiftAndCaps();
         break;
       case 'ControlRight' || 'ControlLeft':
         break;
@@ -117,6 +140,26 @@ export default class Key {
       this.textarea.value = textBeforeCursor + this.currentValue + textAterCursor;
       this.textarea.selectionStart = cursorStart + 1;
       this.textarea.selectionEnd = cursorStart + 1;
+    }
+  }
+
+  changeKeyCaseDown() {
+    if (this.keyCode === 'CapsLock') return;
+    const {
+      lang, caps, shiftLeft, shiftRight,
+    } = this.keyboard;
+  }
+
+  changeKeyCaseUp() {
+    if (this.keyboard.caps === true) {
+      console.log('yes');
+      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+        this.currentValue = this.key[this.lang].shift;
+        this.title.innerHTML = this.currentValue;
+      }
+    } else {
+      this.currentValue = this.key[this.lang].value;
+      this.title.innerHTML = this.currentValue;
     }
   }
 }
