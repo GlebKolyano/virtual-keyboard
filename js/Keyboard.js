@@ -72,13 +72,13 @@ export default class Keyboard {
       if (!e.target.closest('.key')) return;
       const keyEl = e.target.closest('.key');
       const key = this.allKeys[keyEl.getAttribute('code')];
-      key.keyDown();
+      key.keyDown(true);
     });
     document.addEventListener('mouseup', (e) => {
       if (!e.target.closest('.key')) return;
       const keyEl = e.target.closest('.key');
       const key = this.allKeys[keyEl.getAttribute('code')];
-      key.keyUp();
+      key.keyUp(true);
     });
   }
 }

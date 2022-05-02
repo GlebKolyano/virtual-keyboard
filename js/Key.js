@@ -35,7 +35,7 @@ export default class Key {
     this.currentValue = this.key[lang].value;
   }
 
-  keyDown() {
+  keyDown(isClick) {
     this.keyWrapper.classList.add('keydown');
     if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
       this.writeText();
@@ -44,7 +44,7 @@ export default class Key {
     }
   }
 
-  keyUp() {
+  keyUp(isClick) {
     this.textarea.focus();
     this.keyWrapper.classList.remove('keydown');
   }
@@ -52,12 +52,46 @@ export default class Key {
   funcKeysOn() {
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
-
-    if (this.keyCode === 'ArrowLeft' && cursorStart > 0) {
-      this.textarea.setSelectionRange(cursorStart - 1, cursorStart - 1);
-    }
-    if (this.keyCode === 'ArrowRight') {
-      this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+    const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
+    const textAterCursor = this.textarea.value.substring(cursorStart, this.textarea.value.length);
+    const V = this.textarea.value;
+    const S = this.textarea.selectionStart;
+    const E = this.textarea.selectionEnd;
+    switch (this.keyCode) {
+      case 'ArrowLeft':
+        if (cursorStart > 0) {
+          this.textarea.setSelectionRange(cursorStart - 1, cursorStart - 1);
+        }
+        break;
+      case 'ArrowRight':
+        this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        break;
+      case 'Backspace':
+        if (S === E) {
+          this.textarea.value = V.substring(0, S - 1) + V.substring(S, V.length);
+          this.textarea.setSelectionRange(cursorStart - 1, cursorEnd - 1);
+        } else {
+          this.textarea.value = V.substring(0, S) + V.substring(E, V.length);
+        }
+        break;
+      case 'Delete':
+        if (S === E) {
+          this.textarea.value = V.substring(0, S) + V.substring(S + 1, V.length);
+          this.textarea.setSelectionRange(cursorStart, cursorEnd);
+        } else {
+          this.textarea.value = V.substring(0, S) + V.substring(E, V.length);
+        }
+        break;
+      case 'CapsLock':
+        break;
+      case 'ShiftRight' || 'ShiftLeft':
+        break;
+      case 'ControlRight' || 'ControlLeft':
+        break;
+      case 'AltRight' || 'AltLeft':
+        break;
+      default:
+        break;
     }
   }
 
