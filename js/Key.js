@@ -51,9 +51,21 @@ export default class Key {
     }
     switch (this.keyCode) {
       case 'CapsLock':
-        this.keyWrapper.classList.remove('func-key_active');
+        this.keyWrapper.classList.toggle('func-key_active');
         this.keyboard.caps = !this.keyboard.caps;
-        this.keyboard.shiftAndCaps();
+        this.keyboard.capsClick();
+        break;
+      case 'ShiftRight':
+        if (isClick === false) {
+          this.keyboard.shiftRight = false;
+          this.keyboard.unshift();
+        }
+        break;
+      case 'ShiftLeft':
+        if (isClick === false) {
+          this.keyboard.shiftLeft = false;
+          this.keyboard.unshift();
+        }
         break;
       default:
         break;
@@ -95,19 +107,26 @@ export default class Key {
         }
         break;
       case 'CapsLock':
-        this.keyWrapper.classList.add('func-key_active');
         break;
       case 'ShiftRight':
         if (isClick === false) {
           this.keyboard.shiftRight = true;
+          this.keyboard.shift();
+        } else {
+          this.keyWrapper.classList.toggle('func-key_active');
+          this.keyboard.shiftRight = !this.keyboard.shiftRight;
+          this.keyboard.shiftClick();
         }
-        this.keyboard.shiftAndCaps();
         break;
       case 'ShiftLeft':
         if (isClick === false) {
           this.keyboard.shiftLeft = true;
+          this.keyboard.shift();
+        } else {
+          this.keyWrapper.classList.toggle('func-key_active');
+          this.keyboard.shiftRight = !this.keyboard.shiftRight;
+          this.keyboard.shiftClick();
         }
-        this.keyboard.shiftAndCaps();
         break;
       case 'ControlRight' || 'ControlLeft':
         break;
@@ -143,23 +162,87 @@ export default class Key {
     }
   }
 
-  changeKeyCaseDown() {
-    if (this.keyCode === 'CapsLock') return;
-    const {
-      lang, caps, shiftLeft, shiftRight,
-    } = this.keyboard;
+  shifOn() {
+    const { caps, shiftLeft, shiftRight } = this.keyboard;
+    if (this.key[this.lang].shift) {
+      if (!caps) {
+        if (shiftLeft || shiftRight) {
+          this.sub.classList.add('shift_active');
+          this.currentValue = this.key[this.lang].shift;
+          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+            this.title.innerHTML = this.currentValue;
+          }
+        }
+      } else if (shiftLeft || shiftRight) {
+        this.sub.classList.add('shift_active');
+        if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
+          this.currentValue = this.key[this.lang].shift;
+        }
+      }
+    }
   }
 
-  changeKeyCaseUp() {
-    if (this.keyboard.caps === true) {
-      console.log('yes');
-      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-        this.currentValue = this.key[this.lang].shift;
-        this.title.innerHTML = this.currentValue;
+  shifOff() {
+    const { caps, shiftLeft, shiftRight } = this.keyboard;
+    if (this.key[this.lang].shift) {
+      if (!caps) {
+        if (!shiftLeft && !shiftRight) {
+          this.sub.classList.remove('shift_active');
+          this.currentValue = this.key[this.lang].value;
+          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+            this.title.innerHTML = this.currentValue;
+          }
+        }
+      } else if (!shiftLeft && !shiftRight) {
+        this.sub.classList.remove('shift_active');
+        if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
+          this.currentValue = this.key[this.lang].value;
+        }
       }
-    } else {
-      this.currentValue = this.key[this.lang].value;
-      this.title.innerHTML = this.currentValue;
+    }
+  }
+
+  capsToggle() {
+    const { shiftLeft, shiftRight } = this.keyboard;
+    if (this.key[this.lang].shift) {
+      if (!shiftLeft && !shiftRight) {
+        if (this.currentValue === this.key[this.lang].shift) {
+          if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+            this.currentValue = this.key[this.lang].value;
+            this.title.innerHTML = this.currentValue;
+          }
+        } else if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+          this.currentValue = this.key[this.lang].shift;
+          this.title.innerHTML = this.currentValue;
+        }
+      }
+    }
+  }
+
+  shiftToggle() {
+    const { caps, shiftLeft, shiftRight } = this.keyboard;
+    if (this.key[this.lang].shift) {
+      if (!caps) {
+        if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+          if (this.currentValue !== this.key[this.lang].shift) {
+            this.currentValue = this.key[this.lang].shift;
+            this.title.innerHTML = this.currentValue;
+          } else if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
+            this.currentValue = this.key[this.lang].value;
+            this.title.innerHTML = this.currentValue;
+          }
+        }
+      }
+
+      if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
+        if (this.currentValue === this.key[this.lang].shift) {
+          this.sub.classList.remove('shift_active');
+          this.currentValue = this.key[this.lang].value;
+        } else {
+          this.sub.classList.add('shift_active');
+          this.currentValue = this.key[this.lang].shift;
+        }
+      }
     }
   }
 }

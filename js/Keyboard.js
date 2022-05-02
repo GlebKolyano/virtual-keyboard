@@ -82,12 +82,27 @@ export default class Keyboard {
     });
   }
 
-  shiftAndCaps() {
+  shift() {
     Object.keys(this.allKeys).forEach((code) => {
-      this.allKeys[code].changeKeyCaseUp();
-      if (code === 'CapsLock') {
-        this.allKeys[code].changeKeyCaseDown();
-      }
+      this.allKeys[code].shifOn();
+    });
+  }
+
+  unshift() {
+    Object.keys(this.allKeys).forEach((code) => {
+      this.allKeys[code].shifOff();
+    });
+  }
+
+  capsClick() {
+    Object.keys(this.allKeys).forEach((code) => {
+      this.allKeys[code].capsToggle();
+    });
+  }
+
+  shiftClick() {
+    Object.keys(this.allKeys).forEach((code) => {
+      this.allKeys[code].shiftToggle();
     });
   }
 
