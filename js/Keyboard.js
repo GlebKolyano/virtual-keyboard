@@ -18,7 +18,7 @@ export default class Keyboard {
       ['Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'Delete'],
       ['CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter'],
       ['ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight'],
-      ['Sound', 'Language', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'Sound'],
+      ['Sound', 'Sound', 'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ControlRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'Language'],
     ];
 
     this.textarea = document.createElement('textarea');
@@ -37,7 +37,7 @@ export default class Keyboard {
 
   init() {
     this.drawKeys();
-    this.listenEventListeners();
+    this.keyboardEventListeners();
   }
 
   drawKeys() {
@@ -53,12 +53,12 @@ export default class Keyboard {
     });
   }
 
-  listenEventListeners() {
+  keyboardEventListeners() {
     document.addEventListener('keyup', (e) => {
       e.preventDefault();
       if (this.allKeys[e.code]) {
         const key = this.allKeys[e.code];
-        key.keyUp(false);
+        key.keyUp();
       }
     });
     document.addEventListener('keydown', (e) => {
@@ -72,13 +72,13 @@ export default class Keyboard {
       if (!e.target.closest('.key')) return;
       const keyEl = e.target.closest('.key');
       const key = this.allKeys[keyEl.getAttribute('code')];
-      key.keyDown(true);
+      key.keyDown();
     });
     document.addEventListener('mouseup', (e) => {
       if (!e.target.closest('.key')) return;
       const keyEl = e.target.closest('.key');
       const key = this.allKeys[keyEl.getAttribute('code')];
-      key.keyUp(true);
+      key.keyUp();
     });
   }
 
@@ -94,5 +94,19 @@ export default class Keyboard {
     });
   }
 
-  changeLanguage() {}
+  changeLanguage() {
+    if (this.lang === 'en') {
+      this.lang = 'ru';
+    } else {
+      this.lang = 'en';
+    }
+    window.localStorage.setItem('lang', this.lang);
+    this.drawNewLang();
+  }
+
+  drawNewLang() {
+    Object.keys(this.allKeys).forEach((code) => {
+      this.allKeys[code].languageToggle();
+    });
+  }
 }

@@ -111,6 +111,16 @@ body {
   color 1s,
   text-shadow 1s;
 }
+
+.active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  background: rgb(80, 77, 77);
+  transition: background 1s,
+    color 1s,
+    text-shadow 1s;
+}
+
 .shift_active {
   color: rgb(0, 252, 218);
   text-shadow: 0px 0px 5px rgb(0, 252, 218);
@@ -121,7 +131,6 @@ body {
   color: rgb(0, 252, 218);
   text-shadow: 0px 0px 5px rgb(0, 252, 218);
   background: rgb(80, 77, 77);
-  transition: background 1s, color 1s, text-shadow 1s;
 }
 div[code=Enter], div[code=Backspace], div[code=CapsLock] ,div[code=ShiftRight], div[code=ShiftLeft] {
   width: 95px;

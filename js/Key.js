@@ -5,19 +5,17 @@ export default class Key {
     this.key = {};
     this.keyCode = code;
     this.allKeys = KeyService;
-    this.lang = lang;
     this.keyboard = keyboard;
     this.textarea = keyboard.textarea;
+    this.isPress = false;
 
-    if (lang === 'en') {
-      this.allKeys.en.forEach(() => {
-        this.key.en = this.allKeys[lang].find((keyData) => keyData.code === this.keyCode);
-      });
-    } else if (lang === 'ru') {
-      this.allKeys.ru.forEach(() => {
-        this.key.ru = this.allKeys[lang].find((keyData) => keyData.code === this.keyCode);
-      });
-    }
+    this.allKeys.en.forEach(() => {
+      this.key.en = this.allKeys.en.find((keyData) => keyData.code === this.keyCode);
+    });
+
+    this.allKeys.ru.forEach(() => {
+      this.key.ru = this.allKeys.ru.find((keyData) => keyData.code === this.keyCode);
+    });
 
     this.sub = document.createElement('span');
     this.sub.textContent = this.key[lang].shift;
@@ -33,11 +31,17 @@ export default class Key {
     this.keyWrapper.setAttribute('code', this.keyCode);
     this.keyWrapper.append(this.sub, this.title);
     this.currentValue = this.key[lang].value;
+
+    this.keyWrapper.addEventListener('mouseleave', (e) => {
+      if (!e.target.closest('.key')) return;
+      this.keyLeave();
+    });
   }
 
   keyDown(isRepeat = false, isClick = false) {
-    this.keyWrapper.classList.add('keydown');
-    if (this.key[this.lang].shift !== null || this.key[this.lang].code === 'ArrowDown' || this.key[this.lang].code === 'ArrowUp') {
+    const { lang } = this.keyboard;
+    this.keyWrapper.classList.add('keydown', 'active');
+    if (this.key[lang].shift !== null || this.key[lang].code === 'ArrowDown' || this.key[lang].code === 'ArrowUp') {
       this.writeText();
     } else {
       this.funcKeysOn(isRepeat, isClick);
@@ -46,7 +50,8 @@ export default class Key {
 
   keyUp() {
     this.textarea.focus();
-    this.keyWrapper.classList.remove('keydown');
+    this.keyWrapper.classList.remove('keydown', 'active');
+
     switch (this.keyCode) {
       case 'CapsLock':
         this.keyWrapper.classList.toggle('func-key_active');
@@ -54,21 +59,46 @@ export default class Key {
         this.keyboard.capsLock();
         break;
       case 'ShiftRight':
-        this.keyWrapper.classList.toggle('func-key_active');
-        this.keyboard.shiftRight = false;
-        this.keyboard.shift();
+        if (this.keyboard.shiftRight) {
+          this.keyWrapper.classList.remove('func-key_active');
+          this.keyboard.shiftRight = false;
+          this.keyboard.shift();
+          this.isPress = false;
+        }
         break;
       case 'ShiftLeft':
-        this.keyWrapper.classList.toggle('func-key_active');
-        this.keyboard.shiftLeft = false;
-        this.keyboard.shift();
+        if (this.keyboard.shiftLeft) {
+          this.keyWrapper.classList.remove('func-key_active');
+          this.keyboard.shiftLeft = false;
+          this.keyboard.shift();
+          this.isPress = false;
+        }
         break;
       default:
         break;
     }
   }
 
+  keyLeave() {
+    if (this.keyWrapper.classList.contains('keydown', 'active')) {
+      this.keyWrapper.classList.remove('keydown', 'active');
+    }
+    if (!this.isPress) {
+      if (this.keyCode === 'ShiftRight' && this.keyboard.shiftRight) {
+        this.keyWrapper.classList.remove('func-key_active');
+        this.keyboard.shiftRight = false;
+        this.keyboard.shift();
+      }
+      if (this.keyCode === 'ShiftLeft' && this.keyboard.shiftLeft) {
+        this.keyWrapper.classList.remove('func-key_active');
+        this.keyboard.shiftLeft = false;
+        this.keyboard.shift();
+      }
+    }
+  }
+
   funcKeysOn(isRepeat) {
+    const { caps } = this.keyboard;
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
     const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
@@ -105,16 +135,20 @@ export default class Key {
         break;
       case 'ShiftRight':
         if (isRepeat === false) {
-          this.keyWrapper.classList.toggle('func-key_active');
+          this.keyWrapper.classList.add('func-key_active');
           this.keyboard.shiftRight = true;
           this.keyboard.shift();
+        } else {
+          this.isPress = true;
         }
         break;
       case 'ShiftLeft':
         if (isRepeat === false) {
-          this.keyWrapper.classList.toggle('func-key_active');
+          this.keyWrapper.classList.add('func-key_active');
           this.keyboard.shiftLeft = true;
           this.keyboard.shift();
+        } else {
+          this.isPress = true;
         }
         break;
       case 'ControlRight' || 'ControlLeft':
@@ -132,6 +166,9 @@ export default class Key {
       case 'Tab':
         this.textarea.value = `${textBeforeCursor}    ${textAterCursor}`;
         this.textarea.setSelectionRange(cursorEnd + 4, cursorEnd + 4);
+        break;
+      case 'Language':
+        this.keyboard.changeLanguage();
         break;
       default:
         break;
@@ -152,13 +189,14 @@ export default class Key {
   }
 
   capsToggle() {
-    if (this.key[this.lang].shift) {
-      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-        if (this.currentValue !== this.key[this.lang].shift) {
-          this.currentValue = this.key[this.lang].shift;
+    const { lang } = this.keyboard;
+    if (this.key[lang].shift) {
+      if (this.key[lang].shift === this.key[lang].value.toUpperCase()) {
+        if (this.currentValue !== this.key[lang].shift) {
+          this.currentValue = this.key[lang].shift;
           this.title.innerHTML = this.currentValue;
         } else {
-          this.currentValue = this.key[this.lang].value;
+          this.currentValue = this.key[lang].value;
           this.title.innerHTML = this.currentValue;
         }
       }
@@ -166,22 +204,79 @@ export default class Key {
   }
 
   shiftToggle() {
-    if (this.key[this.lang].shift) {
-      if (this.key[this.lang].shift === this.key[this.lang].value.toUpperCase()) {
-        if (this.currentValue !== this.key[this.lang].shift) {
-          this.currentValue = this.key[this.lang].shift;
+    const { lang } = this.keyboard;
+    if (this.key[lang].shift) {
+      if (this.key[lang].shift === this.key[lang].value.toUpperCase()) {
+        if (this.currentValue !== this.key[lang].shift) {
+          this.currentValue = this.key[lang].shift;
           this.title.innerHTML = this.currentValue;
         } else {
-          this.currentValue = this.key[this.lang].value;
+          this.currentValue = this.key[lang].value;
           this.title.innerHTML = this.currentValue;
         }
-      } else if (this.key[this.lang].shift !== this.key[this.lang].value.toUpperCase()) {
-        if (this.currentValue === this.key[this.lang].shift) {
+      } else if (this.key[lang].shift !== this.key[lang].value.toUpperCase()) {
+        if (this.currentValue === this.key[lang].shift) {
           this.sub.classList.remove('shift_active');
-          this.currentValue = this.key[this.lang].value;
+          this.currentValue = this.key[lang].value;
         } else {
           this.sub.classList.add('shift_active');
-          this.currentValue = this.key[this.lang].shift;
+          this.currentValue = this.key[lang].shift;
+        }
+      }
+    }
+  }
+
+  languageToggle() {
+    const {
+      lang, caps, shiftLeft, shiftRight,
+    } = this.keyboard;
+    const { shift, value } = this.key[lang];
+    if (shift) {
+      this.title.innerHTML = '';
+      this.sub.innerHTML = '';
+      if (!caps) {
+        // выключен капс
+        // включен шифт
+        if (shiftLeft || shiftRight) {
+          this.currentValue = shift;
+          if (shift === value.toUpperCase()) {
+            this.title.innerHTML = shift;
+          } else if (shift !== value.toUpperCase()) {
+            this.title.innerHTML = value;
+            this.sub.innerHTML = shift;
+          }
+        // выключен шифт
+        } else if (!shiftLeft && !shiftRight) {
+          this.currentValue = value;
+          if (shift === value.toUpperCase()) {
+            this.title.innerHTML = value;
+          } else if (shift !== value.toUpperCase()) {
+            this.title.innerHTML = value;
+            this.sub.innerHTML = shift;
+          }
+        }
+      } else if (caps) {
+        // включен капс
+        // включен шифт
+        if (shiftLeft || shiftRight) {
+          if (shift === value.toUpperCase()) {
+            this.currentValue = value;
+            this.title.innerHTML = value;
+          } else if (shift !== value.toUpperCase()) {
+            this.currentValue = shift;
+            this.title.innerHTML = value;
+            this.sub.innerHTML = shift;
+          }
+        // выключен шифт
+        } else if (!shiftLeft && !shiftRight) {
+          if (shift === value.toUpperCase()) {
+            this.currentValue = shift;
+            this.title.innerHTML = shift;
+          } else if (shift !== value.toUpperCase()) {
+            this.currentValue = value;
+            this.title.innerHTML = value;
+            this.sub.innerHTML = shift;
+          }
         }
       }
     }
