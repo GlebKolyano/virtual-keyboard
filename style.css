@@ -136,9 +136,13 @@ div[code=Enter], div[code=Backspace], div[code=CapsLock] ,div[code=ShiftRight], 
   width: 95px;
 }
 div[code=Space] {
-  width: 205px;
+  width: 260px;
 }
 
+.key-sound {
+  text-shadow: 0px 0px 10px rgb(255, 0, 0);
+  background: rgb(0, 0, 0);
+}
 
 span, .key, .keyboard {
   -ms-user-select: none;

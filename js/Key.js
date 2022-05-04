@@ -31,15 +31,8 @@ export default class Key {
     this.keyWrapper.setAttribute('code', this.keyCode);
     this.keyWrapper.append(this.sub, this.title);
     this.currentValue = this.key[lang].value;
-    if (this.keyCode === 'Language') {
-      this.keyWrapper.addEventListener('click', () => {
-        this.keyboard.changeLanguage();
-      });
-    }
-    this.keyWrapper.addEventListener('mouseleave', (e) => {
-      if (!e.target.closest('.key')) return;
-      this.keyLeave();
-    });
+
+    this.addEventListenerForKeys();
   }
 
   keyDown(isRepeat = false, isClick = false) {
@@ -285,5 +278,28 @@ export default class Key {
         }
       }
     }
+  }
+
+  addEventListenerForKeys() {
+    switch (this.keyCode) {
+      case 'Sound':
+        this.keyWrapper.addEventListener('click', () => {
+          this.keyboard.sound = !this.keyboard.sound;
+          this.keyWrapper.classList.toggle('key-sound');
+        });
+        break;
+      case 'Language':
+        this.keyWrapper.addEventListener('click', () => {
+          this.keyboard.changeLanguage();
+        });
+        break;
+      default:
+        break;
+    }
+
+    this.keyWrapper.addEventListener('mouseleave', (e) => {
+      if (!e.target.closest('.key')) return;
+      this.keyLeave();
+    });
   }
 }

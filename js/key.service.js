@@ -2,7 +2,7 @@ export default {
   en: [
     {
       code: 'Sound',
-      value: '♥',
+      value: '🔈',
       shift: null,
     },
     {
@@ -334,7 +334,7 @@ export default {
   ru: [
     {
       code: 'Sound',
-      value: '♥',
+      value: '🔈',
       shift: null,
     },
     {
