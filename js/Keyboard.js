@@ -80,6 +80,11 @@ export default class Keyboard {
       const key = this.allKeys[keyEl.getAttribute('code')];
       key.keyUp();
     });
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.altKey) {
+        this.changeLanguage();
+      }
+    });
   }
 
   capsLock() {

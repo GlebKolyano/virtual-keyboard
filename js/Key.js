@@ -31,7 +31,11 @@ export default class Key {
     this.keyWrapper.setAttribute('code', this.keyCode);
     this.keyWrapper.append(this.sub, this.title);
     this.currentValue = this.key[lang].value;
-
+    if (this.keyCode === 'Language') {
+      this.keyWrapper.addEventListener('click', () => {
+        this.keyboard.changeLanguage();
+      });
+    }
     this.keyWrapper.addEventListener('mouseleave', (e) => {
       if (!e.target.closest('.key')) return;
       this.keyLeave();
@@ -167,9 +171,6 @@ export default class Key {
         this.textarea.value = `${textBeforeCursor}    ${textAterCursor}`;
         this.textarea.setSelectionRange(cursorEnd + 4, cursorEnd + 4);
         break;
-      case 'Language':
-        this.keyboard.changeLanguage();
-        break;
       default:
         break;
     }
@@ -242,6 +243,7 @@ export default class Key {
           if (shift === value.toUpperCase()) {
             this.title.innerHTML = shift;
           } else if (shift !== value.toUpperCase()) {
+            this.sub.classList.add('shift_active');
             this.title.innerHTML = value;
             this.sub.innerHTML = shift;
           }
@@ -251,6 +253,7 @@ export default class Key {
           if (shift === value.toUpperCase()) {
             this.title.innerHTML = value;
           } else if (shift !== value.toUpperCase()) {
+            this.sub.classList.remove('shift_active');
             this.title.innerHTML = value;
             this.sub.innerHTML = shift;
           }
@@ -263,6 +266,7 @@ export default class Key {
             this.currentValue = value;
             this.title.innerHTML = value;
           } else if (shift !== value.toUpperCase()) {
+            this.sub.classList.add('shift_active');
             this.currentValue = shift;
             this.title.innerHTML = value;
             this.sub.innerHTML = shift;
@@ -273,6 +277,7 @@ export default class Key {
             this.currentValue = shift;
             this.title.innerHTML = shift;
           } else if (shift !== value.toUpperCase()) {
+            this.sub.classList.remove('shift_active');
             this.currentValue = value;
             this.title.innerHTML = value;
             this.sub.innerHTML = shift;

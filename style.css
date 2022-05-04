@@ -107,24 +107,24 @@ body {
   color: rgb(0, 252, 218);
   text-shadow: 0px 0px 5px rgb(0, 252, 218);
   background: rgb(80, 77, 77);
-  transition: background 1s,
-  color 1s,
-  text-shadow 1s;
+  transition: background 0.5s,
+  color 0.5s,
+  text-shadow 0.5s;
 }
 
 .active {
   color: rgb(0, 252, 218);
   text-shadow: 0px 0px 5px rgb(0, 252, 218);
   background: rgb(80, 77, 77);
-  transition: background 1s,
-    color 1s,
-    text-shadow 1s;
+  transition: background 0.5s,
+    color 0.5s,
+    text-shadow 0.5s;
 }
 
 .shift_active {
   color: rgb(0, 252, 218);
   text-shadow: 0px 0px 5px rgb(0, 252, 218);
-  transition: color 1s, text-shadow 1s;
+  transition: color 0.5s, text-shadow 0.5s;
 }
 
 .func-key_active {

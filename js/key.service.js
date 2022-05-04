@@ -8,7 +8,7 @@ export default {
     {
       code: 'Language',
       value: 'ru',
-      shift: null,
+      shift: 'RU',
     },
     {
       code: 'Backquote',
@@ -340,7 +340,7 @@ export default {
     {
       code: 'Language',
       value: 'en',
-      shift: null,
+      shift: 'EN',
     },
     {
       code: 'Backquote',
