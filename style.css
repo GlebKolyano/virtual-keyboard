@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0px;
+}
+body {
+  background: #333;
+  color: rgb(224, 220, 213);
+  font-size: 1rem;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+.container {
+  max-width: 894px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.textarea {
+  outline: none;
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 25vh;
+  font-size: 20px;
+}
+.keyboard {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 50px auto;
+  min-width: 800px;
+  height: 315px;
+  background: #d5d9dc url('') repeat-x;
+  -moz-border-radius-topleft: 7px 21px;
+  -moz-border-radius-topright: 7px 21px;
+  -moz-border-radius-bottomright: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 7px 21px;
+  border-top-right-radius: 7px 21px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 50px 0 0 10px;
+  -webkit-box-shadow:
+    inset 0 0 8px #bbb,
+    0 1px 0 #aaa,
+    0 4px 0 #bbb,
+    0 10px 30px #111;
+  -moz-box-shadow:
+    inset 0 0 8px #bbb,
+    0 1px 0 #aaa,
+    0 4px 0 #bbb,
+    0 10px 30px #111;
+  box-shadow:
+    inset 0 0 8px #bbb,
+    0 1px 0 #aaa,
+    0 4px 0 #bbb,
+    0 10px 30px #111;
+}
+
+.keys-row {
+  display: flex;
+}
+
+
+.key {
+  color: #aaa;
+  font: bold 9pt arial;
+  text-decoration: none;
+  width: 44px;
+  height: 41px;
+  margin: 5px;
+  background: #222;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-top: 1px solid #222;
+  -webkit-box-shadow:
+    inset 0 0 25px #333,
+    0 1px 0 #000,
+    0 2px 0 #222,
+    0 2px 3px #333;
+  -moz-box-shadow:
+    inset 0 0 25px #333,
+    0 1px 0 #000,
+    0 2px 0 #222,
+    0 2px 3px #333;
+  box-shadow:
+    inset 0 0 25px #333,
+    0 1px 0 #000,
+    0 2px 0 #222,
+    0 2px 3px #333;
+  text-shadow: 0px -1px 0px #000;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.key:active,
+.keydown {
+  color: #888;
+  background: #222;
+  margin: 7px 5px 3px;
+  -webkit-box-shadow:
+    inset 0 0 25px #333,
+    0 0 3px #333;
+  -moz-box-shadow:
+    inset 0 0 25px #333,
+    0 0 3px #333;
+  box-shadow:
+    inset 0 0 25px #333,
+    0 0 3px #333;
+  border-top: 1px solid #000;
+}
+
+.key:active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  background: rgb(80, 77, 77);
+  transition: background 0.5s,
+  color 0.5s,
+  text-shadow 0.5s;
+}
+
+.active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  background: rgb(80, 77, 77);
+  transition: background 0.5s,
+    color 0.5s,
+    text-shadow 0.5s;
+}
+
+.shift_active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  transition: color 0.5s, text-shadow 0.5s;
+}
+
+.func-key_active {
+  color: rgb(0, 252, 218);
+  text-shadow: 0px 0px 5px rgb(0, 252, 218);
+  background: rgb(80, 77, 77);
+}
+div[code=Enter], div[code=Backspace], div[code=CapsLock] ,div[code=ShiftRight], div[code=ShiftLeft] {
+  width: 95px;
+}
+div[code=Space] {
+  width: 315px;
+}
+
+span, .key, .keyboard {
+  user-select: none;
+}
+
