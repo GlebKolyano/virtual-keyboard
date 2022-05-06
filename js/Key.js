@@ -60,7 +60,6 @@ export default class Key {
           this.keyWrapper.classList.remove('func-key_active');
           this.keyboard.shiftRight = false;
           this.keyboard.shift();
-          this.isPress = false;
         }
         break;
       case 'ShiftLeft':
@@ -68,7 +67,6 @@ export default class Key {
           this.keyWrapper.classList.remove('func-key_active');
           this.keyboard.shiftLeft = false;
           this.keyboard.shift();
-          this.isPress = false;
         }
         break;
       default:
@@ -79,18 +77,6 @@ export default class Key {
   keyLeave() {
     if (this.keyWrapper.classList.contains('keydown', 'active')) {
       this.keyWrapper.classList.remove('keydown', 'active');
-    }
-    if (!this.isPress) {
-      if (this.keyCode === 'ShiftRight' && this.keyboard.shiftRight) {
-        this.keyWrapper.classList.remove('func-key_active');
-        this.keyboard.shiftRight = false;
-        this.keyboard.shift();
-      }
-      if (this.keyCode === 'ShiftLeft' && this.keyboard.shiftLeft) {
-        this.keyWrapper.classList.remove('func-key_active');
-        this.keyboard.shiftLeft = false;
-        this.keyboard.shift();
-      }
     }
   }
 
@@ -130,21 +116,17 @@ export default class Key {
       case 'CapsLock':
         break;
       case 'ShiftRight':
-        if (isRepeat === false) {
+        if (isRepeat === false && !this.keyboard.shiftRight) {
           this.keyWrapper.classList.add('func-key_active');
           this.keyboard.shiftRight = true;
           this.keyboard.shift();
-        } else {
-          this.isPress = true;
         }
         break;
       case 'ShiftLeft':
-        if (isRepeat === false) {
+        if (isRepeat === false && !this.keyboard.shiftLeft) {
           this.keyWrapper.classList.add('func-key_active');
           this.keyboard.shiftLeft = true;
           this.keyboard.shift();
-        } else {
-          this.isPress = true;
         }
         break;
       case 'ControlRight' || 'ControlLeft':
@@ -160,7 +142,7 @@ export default class Key {
         this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
         break;
       case 'Tab':
-        this.textarea.value = `${textBeforeCursor}    ${textAterCursor}`;
+        this.textarea.value = `${textBeforeCursor}\t${textAterCursor}`;
         this.textarea.setSelectionRange(cursorEnd + 4, cursorEnd + 4);
         break;
       default:
