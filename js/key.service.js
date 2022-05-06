@@ -1,11 +1,6 @@
 export default {
   en: [
     {
-      code: 'Sound',
-      value: '🔈',
-      shift: null,
-    },
-    {
       code: 'Language',
       value: 'ru',
       shift: 'RU',
@@ -332,11 +327,6 @@ export default {
     },
   ],
   ru: [
-    {
-      code: 'Sound',
-      value: '🔈',
-      shift: null,
-    },
     {
       code: 'Language',
       value: 'en',
