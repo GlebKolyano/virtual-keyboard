@@ -50,11 +50,6 @@ export default class Key {
     this.keyWrapper.classList.remove('keydown', 'active');
 
     switch (this.keyCode) {
-      case 'CapsLock':
-        this.keyWrapper.classList.toggle('func-key_active');
-        this.keyboard.caps = !this.keyboard.caps;
-        this.keyboard.capsLock();
-        break;
       case 'ShiftRight':
         if (this.keyboard.shiftRight) {
           this.keyWrapper.classList.remove('func-key_active');
@@ -114,6 +109,11 @@ export default class Key {
         }
         break;
       case 'CapsLock':
+        if (isRepeat === false) {
+          this.keyWrapper.classList.toggle('func-key_active');
+          this.keyboard.caps = !this.keyboard.caps;
+          this.keyboard.capsLock();
+        }
         break;
       case 'ShiftRight':
         if (isRepeat === false && !this.keyboard.shiftRight) {

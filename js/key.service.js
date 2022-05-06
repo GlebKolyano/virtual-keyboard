@@ -312,22 +312,22 @@ export default {
     },
     {
       code: 'ArrowLeft',
-      value: '⮜',
+      value: '◄',
       shift: null,
     },
     {
       code: 'ArrowUp',
-      value: '⮝',
+      value: '▲',
       shift: null,
     },
     {
       code: 'ArrowDown',
-      value: '⮟',
+      value: '▼',
       shift: null,
     },
     {
       code: 'ArrowRight',
-      value: '⮞',
+      value: '►',
       shift: null,
     },
   ],
@@ -644,22 +644,22 @@ export default {
     },
     {
       code: 'ArrowLeft',
-      value: '⮜',
+      value: '◄',
       shift: null,
     },
     {
       code: 'ArrowUp',
-      value: '⮝',
+      value: '▲',
       shift: null,
     },
     {
       code: 'ArrowDown',
-      value: '⮟',
+      value: '▼',
       shift: null,
     },
     {
       code: 'ArrowRight',
-      value: '⮞',
+      value: '►',
       shift: null,
     },
   ],
