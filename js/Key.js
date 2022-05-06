@@ -95,7 +95,8 @@ export default class Key {
       case 'Backspace':
         if (S === E) {
           this.textarea.value = V.substring(0, S - 1) + V.substring(S, V.length);
-          this.textarea.setSelectionRange(cursorStart - 1, cursorEnd - 1);
+          this.textarea.selectionStart = cursorStart - 1 < 1 ? 0 : cursorStart - 1;
+          this.textarea.selectionEnd = cursorEnd - 1 < 1 ? 0 : cursorEnd - 1;
         } else {
           this.textarea.value = V.substring(0, S) + V.substring(E, V.length);
         }
@@ -143,7 +144,8 @@ export default class Key {
         break;
       case 'Tab':
         this.textarea.value = `${textBeforeCursor}\t${textAterCursor}`;
-        this.textarea.setSelectionRange(cursorEnd + 4, cursorEnd + 4);
+        this.textarea.selectionStart = cursorStart + 1;
+        this.textarea.selectionEnd = cursorStart + 1;
         break;
       default:
         break;
