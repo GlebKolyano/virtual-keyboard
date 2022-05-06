@@ -32,7 +32,7 @@ export default class Keyboard {
     this.container.classList.add('container');
 
     this.paragraph = document.createElement('p');
-    this.paragraph.innerHTML = '<i>Клавиатура создана на <b>Windows</b>. Переключение языка: <b>alt + ctrl</b> или <b>специальная клавиша</b> на клавиатуре. Для проверки на ошибки используй команду: <b>npm i + npm run lint.</b></i>';
+    this.paragraph.innerHTML = '<i>Клавиатура создана на <b>Windows</b>. Переключение языка: <b>alt + ctrl</b> или <b>специальная клавиша</b> на клавиатуре. Для проверки на ошибки используй команду: <b>npm i + npm run lint.</b></i>😎';
 
     this.container.append(this.textarea, this.paragraph, this.keyboard);
     document.body.append(this.container);

@@ -135,12 +135,26 @@ export default class Key {
       case 'AltRight' || 'AltLeft':
         break;
       case 'Space':
-        this.textarea.value = `${textBeforeCursor} ${textAterCursor}`;
-        this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        if (cursorStart === cursorEnd) {
+          this.textarea.value = `${textBeforeCursor} ${textAterCursor}`;
+          this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        } else {
+          this.textarea.setRangeText('');
+        }
         break;
       case 'Enter':
-        this.textarea.value = `${textBeforeCursor}\n${textAterCursor}`;
-        this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        if (cursorStart === cursorEnd) {
+          this.textarea.value = `${textBeforeCursor}\n${textAterCursor}`;
+          this.textarea.setSelectionRange(cursorEnd + 1, cursorEnd + 1);
+        } else {
+          this.textarea.setRangeText('');
+          const cStart = this.textarea.selectionStart;
+          const cEnd = this.textarea.selectionEnd;
+          const txtBeforeCursor = this.textarea.value.substring(0, cStart);
+          const txtAterCursor = this.textarea.value.substring(cStart, this.textarea.value.length);
+          this.textarea.value = `${txtBeforeCursor}\n${txtAterCursor}`;
+          this.textarea.setSelectionRange(cEnd + 1, cEnd + 1);
+        }
         break;
       case 'Tab':
         this.textarea.value = `${textBeforeCursor}\t${textAterCursor}`;
