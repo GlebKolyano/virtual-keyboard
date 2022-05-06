@@ -95,7 +95,6 @@ export default class Key {
   }
 
   funcKeysOn(isRepeat) {
-    const { caps } = this.keyboard;
     const cursorStart = this.textarea.selectionStart;
     const cursorEnd = this.textarea.selectionEnd;
     const textBeforeCursor = this.textarea.value.substring(0, cursorStart);
@@ -282,12 +281,6 @@ export default class Key {
 
   addEventListenerForKeys() {
     switch (this.keyCode) {
-      case 'Sound':
-        this.keyWrapper.addEventListener('click', () => {
-          this.keyboard.sound = !this.keyboard.sound;
-          this.keyWrapper.classList.toggle('key-sound');
-        });
-        break;
       case 'Language':
         this.keyWrapper.addEventListener('click', () => {
           this.keyboard.changeLanguage();
